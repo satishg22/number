@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numbers</title>
+    <style>
+        body {
+
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode';
+            text-align: center;
+            margin: 20px;
+        }
+
+        .button {
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: aqua;
+
+            border: none;
+            border-radius: 5px;
+            font-size: xx-large;
+            width: 300px;
+            height: 60px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode';
+
+        }
+
+        #res-container {
+            margin: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #res {
+            font-weight: bold;
+            font-size: x-large;
+            padding-top: 30px;
+            margin-left: 40%;
+            margin-right: 30px;
+        }
+
+        h2 {
+            font-size: 50px;
+        }
+
+        #number1 {
+            width: 100%;
+            height: 250px;
+        }
+
+        #number2 {
+            max-width: 100%;
+            height: auto;
+            opacity: 1;
+            transition: transform 1s ease-in-out;
+        }
+
+        #outer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            width: 100%;
+
+
+        }
+
+        #inner {
+            display: flex;
+            flex-direction: column;
+            margin-left: 20%;
+        }
+
+        #container {
+            margin-top: 50px;
+            margin-left: 50%;
+            font-size: xx-large;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode';
+            font-weight: bolder;
+
+        }
+
+        #abcd {
+            width: 300px;
+            height: 30px;
+            font-size: x-large;
+        }
+
+        .result-image-move {
+            animation: moveUp 0.5s ease-in-out;
+            margin-right: 10%;
+        }
+
+        #resultImage {
+            margin-right: 10%;
+        }
+
+        @keyframes moveUp {
+            from {
+                transform: translateY(20px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <img id="number1" src="download.png" alt="no image">
+
+    <hr>
+    <h2 style="background-color: aqua;">What type of number is it?</h2>
+    <hr>
+
+    <div id="container">
+        <label for="abcd">Enter a number: </label>
+        <input type="text" id="abcd">
+    </div>
+
+    <div id="outer">
+        <div id="inner">
+            <button class="button" onclick="checkNumber('Palindrome')">Palindrome</button>
+            <button class="button" onclick="checkNumber('Armstrong')">Armstrong</button>
+            <button class="button" onclick="checkNumber('Perfect')">Perfect</button>
+            <button class="button" onclick="checkNumber('Prime')">Prime</button>
+        </div>
+        <div id="res"></div>
+        <img id="resultImage" src="13.png" alt=" " style="height: 200px; width: 400px;">
+    </div>
+
+    <script>
+        function checkNumber(resultType) {
+            let number = document.getElementById("abcd").value;
+            let resultText = '';
+            let imagePath = 'R.jpg';
+
+            switch (resultType.toLowerCase()) {
+                case 'palindrome':
+                    resultText = checkPalindrome(number) ? 'is a palindrome.' : 'is not a palindrome.';
+                    imagePath = '12.png';
+                    break;
+                case 'armstrong':
+                    resultText = checkArmstrong(number) ? 'is an Armstrong number.' : 'is not an Armstrong number.';
+                    imagePath = 'R.png';
+                    break;
+                case 'perfect':
+                    resultText = checkPerfect(number) ? 'is a perfect number.' : 'is not a perfect number.';
+                    imagePath = 'S.png';
+                    break;
+                case 'prime':
+                    resultText = checkPrime(number) ? 'is a prime number.' : 'is not a prime number.';
+                    imagePath = 'a.png';
+                    break;
+                default:
+                    resultText = 'Invalid result type.';
+            }
+
+            document.getElementById("res").innerText =` ${ number } ${ resultText }`;
+            updateImage(imagePath);
+
+            document.getElementById("resultImage").classList.add("result-image-move");
+            setTimeout(() => {
+                document.getElementById("resultImage").classList.remove("result-image-move");
+            }, 500);
+        }
+
+        function checkPalindrome(number) {
+            let reversedNumber = parseInt(number.toString().split('').reverse().join(''));
+            return parseInt(number) === reversedNumber;
+        }
+
+        function checkArmstrong(number) {
+            let originalNumber = parseInt(number);
+            let numDigits = number.toString().length;
+            let sum = 0;
+            let temp = originalNumber;
+
+            while (temp > 0) {
+                let digit = temp % 10;
+                sum += Math.pow(digit, numDigits);
+                temp = Math.floor(temp / 10);
+            }
+
+            return sum === originalNumber;
+        }
+
+        function checkPerfect(number) {
+            let sum = 0;
+
+            for (let i = 1; i < number; i++) {
+                if (number % i === 0) {
+                    sum += i;
+                }
+            }
+
+            return sum === parseInt(number);
+        }
+
+        function checkPrime(number) {
+            for (let i = 2; i < number; i++) {
+                if (number % i === 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateImage(imagePath) {
+            let imageElement = document.getElementById("resultImage");
+            imageElement.src = imagePath;
+        }
+
+    </script>
+</body>
+
+</html>
